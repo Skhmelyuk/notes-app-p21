@@ -12,7 +12,7 @@ export default function SettingsScreen() {
       <View style={styles.container}>
         <Text style={styles.text}>Settings</Text>
         <TouchableOpacity onPress={toggleDarkMode}>
-          <Text>Toggle Dark Mode</Text>
+          <Text style={styles.text}>Toggle Dark Mode</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
