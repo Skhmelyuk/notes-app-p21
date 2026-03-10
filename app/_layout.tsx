@@ -1,6 +1,8 @@
 import { ThemeProvider } from "@/hooks/useTheme";
 import { Stack } from "expo-router";
-import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { ConvexReactClient } from "convex/react";
+import { ConvexAuthProvider } from "@convex-dev/auth/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
   unsavedChangesWarning: false,
@@ -8,10 +10,10 @@ const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
 
 export default function RootLayout() {
   return (
-    <ConvexProvider client={convex}>
+    <ConvexAuthProvider client={convex} storage={AsyncStorage}>
       <ThemeProvider>
         <Stack screenOptions={{ headerShown: false }} />
       </ThemeProvider>
-    </ConvexProvider>
+    </ConvexAuthProvider>
   );
 }
