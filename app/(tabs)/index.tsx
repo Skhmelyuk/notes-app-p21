@@ -1,45 +1,36 @@
-import { useEffect, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Header } from "@/components/HeaderHome";
+import { ItemNote } from "@/components/ItemNote";
+import useTheme, { ColorScheme } from "@/hooks/useTheme";
 
-interface Note {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
+import { FlatList, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { NoteInput } from "@/components/NoteInput";
+
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export default function Index() {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const notes = useQuery(api.notes.getNotes);
 
-  useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos")
-      .then((respose) => respose.json())
-      .then((data) => setNotes(data));
-  }, []);
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Text style={styles.title}>My Notes</Text>
+        <Header totalNotes={100} completedNotes={50} />
+        <NoteInput />
 
         <FlatList
           showsVerticalScrollIndicator={false}
           data={notes}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.item}>
-              <Text>{item.title}</Text>
-              <TouchableOpacity>
-                <Text>Delete</Text>
-              </TouchableOpacity>
-            </View>
+            <ItemNote
+              title={item.title}
+              isCompleted={item.completed}
+              id={item._id}
+            />
           )}
         />
       </View>
@@ -47,31 +38,19 @@ export default function Index() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  text: {
-    color: "grey",
-    fontSize: 18,
-  },
-  item: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-    borderRadius: 10,
-    borderColor: "red",
-    borderWidth: 2,
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 36,
-    textAlign: "center",
-    marginBottom: 16,
-    color: "green",
-  },
-});
+const createStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+      paddingInline: 12,
+    },
+    listContent: {
+      paddingHorizontal: 24,
+      paddingBottom: 24,
+    },
+  });
