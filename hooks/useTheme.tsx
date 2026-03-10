@@ -54,7 +54,7 @@ const lightColors: ColorScheme = {
     primary: ["#4F46E5", "#4338CA"],
     success: ["#10B981", "#059669"],
     warning: ["#F59E0B", "#D97706"],
-    danger: ["#EF4444", "#DC2626"],
+    danger: ["#EF4444", "#eb3434"],
     muted: ["#9CA3AF", "#6B7280"],
     empty: ["#F3F4F6", "#E5E7EB"],
   },

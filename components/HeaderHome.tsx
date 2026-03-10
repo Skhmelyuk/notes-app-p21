@@ -1,6 +1,11 @@
+import { api } from "@/convex/_generated/api";
 import useTheme, { ColorScheme } from "@/hooks/useTheme";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, View } from "react-native";
+import { useRoute } from "@react-navigation/native";
+import { useQuery } from "convex/react";
+import { useRouter } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface HeaderProps {
   totalNotes: number;
@@ -10,6 +15,16 @@ interface HeaderProps {
 export const Header = ({ totalNotes, completedNotes }: HeaderProps) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+
+  const { signOut } = useAuthActions();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.replace("/sign-in");
+  };
+
+  const currentUser = useQuery(api.users.currentUser);
 
   const progressPercentage = 0;
 
@@ -26,7 +41,12 @@ export const Header = ({ totalNotes, completedNotes }: HeaderProps) => {
             {completedNotes} of {totalNotes} completed
           </Text>
         </View>
+        <TouchableOpacity onPress={handleSignOut}>
+          <Ionicons name="exit-outline" size={24} color="red" />
+        </TouchableOpacity>
       </View>
+
+      <Text style={{ color: colors.text }}>{currentUser?.email}</Text>
 
       <View style={styles.progressContainer}>
         <View style={styles.progressBarContainer}>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { TextInput, TouchableOpacity, View, StyleSheet } from "react-native";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { LinearGradient } from "expo-linear-gradient";
 
 export const NoteInput = () => {
   const { colors } = useTheme();

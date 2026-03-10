@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface ItemNoteProps {
   title: string;
@@ -64,9 +65,14 @@ export function ItemNote({ title, isCompleted, id }: ItemNoteProps) {
               }}
               activeOpacity={0.8}
             >
-              <View style={styles.actionButton}>
+              <LinearGradient
+                colors={colors.gradients.danger}
+                start={{ x: 1, y: 1 }}
+                end={{ x: 0, y: 0 }}
+                style={styles.actionButton}
+              >
                 <Ionicons name="trash" size={14} color="#fff" />
-              </View>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>
